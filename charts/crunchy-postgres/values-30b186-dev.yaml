@@ -9,9 +9,9 @@ imagePullPolicy: IfNotPresent
 
 instances:
   name: cthub # high availability
-  replicas: 1
+  replicas: 2
   dataVolumeClaimSpec:
-    storage: 1Gi
+    storage: 3Gi
     storageClassName: netapp-block-standard
   requests:
     cpu: 100m
@@ -39,7 +39,7 @@ pgBackRest:
       incremental: 0 0,4,12,16,20 * * *
     volume:
       accessModes: "ReadWriteOnce"
-      storage: 64Mi
+      storage: 1Gi
       storageClassName: netapp-file-backup
   repoHost:
     requests:
@@ -90,7 +90,7 @@ proxy:
     image: # it's not necessary to specify an image as the images specified in the Crunchy Postgres Operator will be pulled by default
     replicas: 1
     requests:
-      cpu: 1m
+      cpu: 25m
       memory: 64Mi
     limits:
       cpu: 50m
@@ -98,11 +98,11 @@ proxy:
 
 # Postgres Cluster resource values:
 pgmonitor:
-  enabled: false
+  enabled: true
   exporter:
     image: # it's not necessary to specify an image as the images specified in the Crunchy Postgres Operator will be pulled by default
     requests:
-      cpu: 1m
+      cpu: 20m
       memory: 64Mi
     limits:
       cpu: 50m
