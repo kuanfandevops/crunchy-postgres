@@ -35,7 +35,8 @@ A chart to provision a [Crunchy Postgres](https://www.crunchydata.com/) cluster.
 ### pgBackRest - Reliable PostgreSQL Backup & Restore
 
 [pgBackRest site](https://pgbackrest.org/)
-[Crunchy pgBackRest docs](https://access.crunchydata.com/documentation/pgbackrest/latest/)
+[Crunchy pgBackRest docs](https://access.crunchydata.com/documentation/pgbackrest/latest/)  
+[Backup and Restore Proces](https://pgbackrest.org/user-guide-rhel.html)
 
 | Parameter                                            | Description                                                   | Default                |
 | ---------------------------------------------------- | ------------------------------------------------------------- | ---------------------- |
