@@ -1,5 +1,5 @@
-fullnameOverride: tfrs-crunchy-test
-# nameOverride: tfrs-crunchy-test
+fullnameOverride: tfrs-crunchy-prod
+# nameOverride: tfrs-crunchy-prod
 
 # crunchyImage: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-postgres:ubi8-14.7-0
 
@@ -7,16 +7,16 @@ postgresVersion: 15
 
 instances:
   name: tfrs # high availability
-  replicas: 2
+  replicas: 3
   dataVolumeClaimSpec:
-    storage: 2.5Gi
+    storage: 5Gi
     storageClassName: netapp-block-standard
   requests:
-    cpu: 200m
-    memory: 256Mi
+    cpu: 300m
+    memory: 350Mi
   limits:
-    cpu: 400m
-    memory: 512Mi
+    cpu: 600m
+    memory: 700Mi
   replicaCertCopy:
     requests:
       cpu: 25m
@@ -27,17 +27,17 @@ instances:
 
 pgBackRest:
   # image: artifacts.developer.gov.bc.ca/bcgov-docker-local/crunchy-pgbackrest:ubi8-2.41-4
-  retention: "2" # Ideally a larger number such as 30 backups/days
+  retention: "18" # Ideally a larger number such as 20 backups/days
   # If retention-full-type set to 'count' then the oldest backups will expire when the number of backups reach the number defined in retention
   # If retention-full-type set to 'time' then the number defined in retention will take that many days worth of full backups before expiration
   retentionFullType: count
   repos:
     schedules:
       full: 0 8 * * *
-      incremental: 0 0,4,12,16,20 * * *
+      incremental: 0 0,1,2,16,17,18,19,20,21,22,23 * * *
     volume:
       accessModes: "ReadWriteOnce"
-      storage: 1Gi
+      storage: 9Gi
       storageClassName: netapp-file-backup
   repoHost:
     requests:
@@ -62,7 +62,7 @@ pgBackRest:
     # s3UriStyle is host or path
     s3UriStyle: path
     # bucket specifies the S3 bucket to use,
-    bucket: "tfrsts"
+    bucket: "tfrspr"
     # endpoint specifies the S3 endpoint to use.
     endpoint: "xxxx"
     # region specifies the S3 region to use. If your S3 storage system does not
@@ -77,7 +77,7 @@ patroni:
   postgresql:
     pg_hba: "host all all 0.0.0.0/0 md5"
     parameters:
-      shared_buffers: 16MB # default is 128MB; a good tuned default for shared_buffers is 25% of the memory allocated to the pod
+      shared_buffers: 80MB # default is 128MB; a good tuned default for shared_buffers is 25% of the memory allocated to the pod
       wal_buffers: "64kB" # this can be set to -1 to automatically set as 1/32 of shared_buffers or 64kB, whichever is larger
       min_wal_size: 32MB
       max_wal_size: 64MB # default is 1GB
